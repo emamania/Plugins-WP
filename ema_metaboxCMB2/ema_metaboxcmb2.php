@@ -17,7 +17,7 @@ if ( file_exists( dirname( __FILE__ ) . '/CMB2/init.php' ) ) {
 add_action( 'cmb2_admin_init', 'campos_tours');
 function campos_tours() {
 	$prefix = 'ema_campos_tours_';
-	
+
 	$metabox_tours = new_cmb2_box( array(
 		'id'            => $prefix . 'metabox',
 		'title'         => __( 'Datos de Cabezera de tour ( Imagen, Subtitulo, Precio )', 'cmb2' ),
@@ -32,9 +32,16 @@ function campos_tours() {
 	) );
 
 	$metabox_tours->add_field( array(
-	  'name'       		=> esc_html__( 'Costo de Tour', 'cmb2' ),
-	  'desc'       		=> esc_html__( 'Precio de Tour en Dolares', 'cmb2' ),
+	  'name'       		=> esc_html__( 'Costo de Tour Adulto', 'cmb2' ),
+	  'desc'       		=> esc_html__( 'Precio de Tour en Dolares (adulto)', 'cmb2' ),
 	  'id'         		=> $prefix . 'price',
+	  'type'       		=> 'text',
+	) );
+
+	$metabox_tours->add_field( array(
+	  'name'       		=> esc_html__( 'Costo de Tour Niño', 'cmb2' ),
+	  'desc'       		=> esc_html__( 'Precio de Tour en Dolares (niño)', 'cmb2' ),
+	  'id'         		=> $prefix . 'price_child',
 	  'type'       		=> 'text',
 	) );
 
@@ -70,19 +77,19 @@ function campos_tours() {
 
 }
 
-function cmb2_output_file_list( $file_list_meta_key, $img_size = 'tour_img_slide' ) {	
+function cmb2_output_file_list( $file_list_meta_key, $img_size = 'tour_img_slide' ) {
 		// Get the list of files
 		$files = get_post_meta( get_the_ID(), $file_list_meta_key, 1 );
-		// inner Elements 
+		// inner Elements
 		echo '<div class="carousel-inner">';
 		// Loop through them and output an image
 		$i=0;
 		foreach ( (array) $files as $attachment_id => $attachment_url ) {
-			if($i == 0) 
+			if($i == 0)
 				$r = "active";
 			else $r = "";
 			echo '<div class="item cont_img '. $r.'">';
-			
+
 				//echo '<img src="' . get_the_post_thumbnail_url() . '">';
 				echo wp_get_attachment_image( $attachment_id, $img_size );
 				echo '<div class="container">';
@@ -100,13 +107,13 @@ function cmb2_output_file_list( $file_list_meta_key, $img_size = 'tour_img_slide
 add_action( 'cmb2_admin_init', 'campos_tour_content');
 function campos_tour_content() {
 	$prefix = 'cbx_tour_content_';
-	
+
 	$metabox_content = new_cmb2_box( array(
 		'id'            => $prefix . 'metabox',
 		'title'         => esc_html__( 'Contenido de Tour (Itinerario, description, detail, table of price and include )', 'cmb2' ),
 		'object_types'  => array( 'tours' ), // Post type
 	) );
-	
+
 	$metabox_content->add_field( array(
 		'name' => 'Precio del Tour',
 		'desc' => 'Ingresar la tabla de Precio segun Hotel (titulo, contenido)',
